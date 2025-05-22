@@ -1,0 +1,146 @@
+<header class="header header-2 header-intro-clearance" th:fragment="header">
+
+
+    <div class="header-bottom sticky-header">
+        <div class="container">
+            <div class="header-left">
+                <div class="dropdown category-dropdown">
+                    <a href="index.html" class="logo">
+                        <img src="/assets/static/fe/images/demos/demo-2/logo.png" alt="Molla Logo" width="105"
+                            height="25">
+                    </a>
+                </div><!-- End .category-dropdown -->
+            </div><!-- End .header-left -->
+
+            <div class="header-center">
+                <nav class="main-nav">
+                    <ul class="menu ">
+                        <li class="megamenu-container ">
+                            <a [routerLink]="''" class="sf-with-ul">Trang chủ</a>
+                        </li>
+                        <li class="megamenu-container ">
+                            <a [routerLink]="'/shop'" class="sf-with-ul">Sản phẩm</a>
+                        </li>
+
+                    </ul><!-- End .menu -->
+                </nav><!-- End .main-nav -->
+            </div><!-- End .header-center -->
+            <div class="header-right">
+
+                <div class="account">
+                    <a href="dashboard.html" title="My account">
+                        <div class="icon">
+                            <i class="icon-user" style="font-size: 30px;"></i>
+                        </div>
+                        <p>Tài khoản</p>
+                    </a>
+                </div>
+                <div class="dropdown cart-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-display="static">
+                        <div class="icon">
+                            <i class="icon-shopping-cart" style="font-size: 30px;"></i>
+                            <span class="cart-count">{{totalQuantity}}</span>
+                        </div>
+                        <p>Giỏ hàng</p>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-cart-products">
+                            <div class="product" *ngFor="let item of cartItems">
+                                <div class="product-cart-details">
+                                    <h4 class="product-title">
+                                        <!-- [routerLink]="['/product', item.product.id]" -->
+                                        <a>{{ item.product.name }}</a>
+                                    </h4>
+
+                                    <span class="cart-product-info">
+                                        <span class="cart-product-qty">{{ item.quantity }}</span>
+                                        x {{ item.product.price | currency:'đ'}}
+                                    </span>
+                                </div><!-- End .product-cart-details -->
+
+                                <figure class="product-image-container">
+                                    <a class="product-image">
+                                        <img [src]="item.product.thumbnail" alt="{{ item.product.name }}">
+                                    </a>
+                                </figure>
+
+                                <!--  -->
+                                <a href="#" class="btn-remove" title="Remove Product">
+                                    <i class="icon-close" (click)="removeItem(item.product.id)"></i>
+                                </a>
+                            </div><!-- End .product -->
+                        </div><!-- End .cart-product -->
+
+                        <div class="dropdown-cart-total">
+                            <span>Tổng</span>
+                            <span class="cart-total-price">{{ totalAmount | currency:'đ' }}</span>
+                        </div><!-- End .dropdown-cart-total -->
+
+                        <div class="dropdown-cart-action">
+                            <a [routerLink]="'/cart'" class="btn btn-primary">Giỏ hàng</a>
+                            <a [routerLink]="'/orders'" class="btn btn-outline-primary-2"
+                                style="width: 20px;height: 38px;"><span>Thanh toán</span></a>
+                        </div>
+                    </div><!-- End .dropdown-menu -->
+
+                </div><!-- End .cart-dropdown -->
+            </div><!-- End .header-right -->
+
+        </div><!-- End .container -->
+    </div><!-- End .header-bottom -->
+</header>
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Đơn Hàng Của Bạn <span>Shop</span></h1>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div class="container" *ngIf="orders.length > 0; else noOrders">
+            <div *ngFor="let order of orders" class="mb-5 border p-3 rounded shadow-sm">
+                <h5>
+                    Đơn hàng #{{ order.id }} -
+                    <span class="badge bg-info text-white">{{ order.status | orderStatus}}</span>
+                </h5>
+
+                <table class="table table-bordered table-striped mt-3">
+                    <thead>
+                        <tr>
+                            <th>Ảnh sản phẩm</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá sản phẩm</th>
+                            <th>Số lượng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of order.orderDetails">
+                            <td>
+                                <img *ngIf="item.product?.thumbnail"
+                                    [src]="environment.appBaseUrl + '/product/images/' + item.product.thumbnail"
+                                    alt="{{ item.product.name }}" width="150" />
+                            </td>
+                            <td>{{ item.productName || 'Sản phẩm không xác định' }}</td>
+                            <td>{{ item.price | currency:'VND' }}</td>
+                            <td>{{ item.numberOfProducts}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"><strong>Tổng giá:</strong></td>
+                            <td><strong>{{ order.totalMoney | currency:'VND' }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <ng-template #noOrders>
+            <div class="alert alert-info text-center mt-5">
+                Không có đơn hàng nào.
+            </div>
+        </ng-template>
+    </div>
+</main>

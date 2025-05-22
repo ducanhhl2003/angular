@@ -1,0 +1,23 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ user.fullName || 'N/A' }}</td>
+            <td>{{ user.email || 'N/A' }}</td>
+            <td>{{ user.status || 'Active' }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Phân trang -->
+<button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Trước</button>
+<span>Trang {{ currentPage }} / {{ totalPages }}</span>
+<button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Tiếp</button>

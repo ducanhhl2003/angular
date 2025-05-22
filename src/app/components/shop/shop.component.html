@@ -1,0 +1,172 @@
+<header class="header header-2 header-intro-clearance" th:fragment="header">
+
+
+    <div class="header-bottom sticky-header">
+        <div class="container">
+            <div class="header-left">
+                <div class="dropdown category-dropdown">
+                    <a href="index.html" class="logo">
+                        <img src="/assets/static/fe/images/demos/demo-2/logo.png" alt="Molla Logo" width="105"
+                            height="25">
+                    </a>
+                </div><!-- End .category-dropdown -->
+            </div><!-- End .header-left -->
+
+            <div class="header-center">
+                <nav class="main-nav">
+                    <ul class="menu ">
+                        <li class="megamenu-container ">
+                            <a [routerLink]="''" class="sf-with-ul">Trang chủ</a>
+                        </li>
+                        <li class="megamenu-container ">
+                            <a [routerLink]="'/shop'" class="sf-with-ul">Sản phẩm</a>
+                        </li>
+
+                    </ul><!-- End .menu -->
+                </nav><!-- End .main-nav -->
+            </div><!-- End .header-center -->
+            <div class="header-right">
+
+                <div class="account">
+                    <a href="dashboard.html" title="My account">
+                        <div class="icon">
+                            <i class="icon-user" style="font-size: 30px;"></i>
+                        </div>
+                        <p>Tài khoản</p>
+                    </a>
+                </div>
+                <div class="dropdown cart-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-display="static">
+                        <div class="icon">
+                            <i class="icon-shopping-cart" style="font-size: 30px;"></i>
+                            <span class="cart-count">{{totalQuantity}}</span>
+                        </div>
+                        <p>Giỏ hàng</p>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-cart-products">
+                            <div class="product" *ngFor="let item of cartItems">
+                                <div class="product-cart-details">
+                                    <h4 class="product-title">
+                                        <!-- [routerLink]="['/product', item.product.id]" -->
+                                        <a>{{ item.product.name }}</a>
+                                    </h4>
+
+                                    <span class="cart-product-info">
+                                        <span class="cart-product-qty">{{ item.quantity }}</span>
+                                        x {{ item.product.price | currency:'đ'}}
+                                    </span>
+                                </div><!-- End .product-cart-details -->
+
+                                <figure class="product-image-container">
+                                    <a class="product-image">
+                                        <img [src]="item.product.thumbnail" alt="{{ item.product.name }}">
+                                    </a>
+                                </figure>
+
+                                <!--  -->
+                                <a href="#" class="btn-remove" title="Remove Product">
+                                    <i class="icon-close" (click)="removeItem(item.product.id)"></i>
+                                </a>
+                            </div><!-- End .product -->
+                        </div><!-- End .cart-product -->
+
+                        <div class="dropdown-cart-total">
+                            <span>Tổng</span>
+                            <span class="cart-total-price">{{ totalAmount | currency:'đ' }}</span>
+                        </div><!-- End .dropdown-cart-total -->
+
+                        <div class="dropdown-cart-action">
+                            <a [routerLink]="'/cart'" class="btn btn-primary">Giỏ hàng</a>
+                            <a [routerLink]="'/orders'" class="btn btn-outline-primary-2"
+                                style="width: 20px;height: 38px;"><span>Thanh toán</span></a>
+                        </div>
+                    </div><!-- End .dropdown-menu -->
+
+                </div><!-- End .cart-dropdown -->
+            </div><!-- End .header-right -->
+
+        </div><!-- End .container -->
+    </div><!-- End .header-bottom -->
+</header>
+
+
+<main class="main">
+    <div class="heading heading-center mb-4">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="header-search header-search-extended header-search-visible d-none d-lg-flex w-100">
+                <!-- Dropdown tìm kiếm theo thể loại -->
+                <div class="search-box me-3 w-25">
+                    <select class="form-control product-category" [(ngModel)]="selectedCategoryId">
+                        <option [value]="0">Tất cả</option>
+                        <option *ngFor="let category of categories" [value]="category.id">
+                            {{ category.categoryName }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Tìm kiếm theo từ khóa -->
+                <div class="header-search-wrapper search-wrapper-wide me-3 w-50" style="
+                height: 47px;
+            ">
+                    <input type="search" class="form-control" placeholder="Tìm kiếm sản phẩm ..." [(ngModel)]="keyword">
+                    <button class="btn btn-primary" type="submit" (click)="searchProducts()">
+                        <i class="icon-search"></i>
+                    </button>
+                </div>
+                <div class="price-filter">
+                    <input type="number" class="form-control" [(ngModel)]="minPrice" placeholder="Giá tối thiểu" />
+                    <input type="number" class="form-control" [(ngModel)]="maxPrice" placeholder="Giá tối đa" />
+                </div> dùng bootstrap
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="tab-content">
+        <div class="tab-pane p-0 fade show active" id="top-all-tab">
+            <div class="products">
+                <div class="row justify-content-center">
+                    <!-- <div class="col-6 col-md-4 col-lg-3 col-xl-2" *ngFor="let product of products"> -->
+                    <div class="col-6 col-md-3" *ngFor="let product of products">
+                        <div class="product product-11 text-center border p-3">
+                            <figure class="product-media">
+                                <a href="product.html">
+                                    <img [src]="product.url" alt="Product image" class="product-image">
+                                </a>
+                            </figure>
+                            <div class="product-body">
+                                <h3 class="product-title">
+                                    <a (click)="onProductClick(product.id)">{{ product.name }}</a>
+                                </h3>
+                                <div class="product-price">
+                                    {{ product.price | number:'1.0-0' }} đ
+                                </div>
+                            </div>
+                            <div class="product-action">
+                                <a (click)="onProductClick(product.id)" class="btn btn-outline-primary btn-sm">Chi tiết
+                                    sản phẩm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pagination mt-4">
+                    <ul class="pagination-list list-inline text-center">
+                        <li *ngFor="let page of [].constructor(totalPages); let i = index" class="page-item">
+                            <a href="javascript:void(0);" (click)="onPageChange(i + 1)" class="page-link"
+                                [class.active]="i + 1 === currentPage">{{ i + 1 }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<app-auth-modal></app-auth-modal>
+<app-login></app-login>
