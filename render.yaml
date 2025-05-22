@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: shopapp-angular
+    env: node
+    plan: free  # hoặc các plan bạn chọn
+    buildCommand: npm install --legacy-peer-deps && npm run build
+    startCommand: npx http-server dist/shopapp-angular -p 3000
+    envVars:
+      - key: NODE_ENV
+        value: production
+    # Nếu muốn chỉ định Node version, thêm dòng sau:
+    nodeVersion: 20.x
