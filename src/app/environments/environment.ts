@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    appBaseUrl: '/api/v1/library'
+    appBaseUrl: 'https://server-pqxj.onrender.com/api/v1/library'
 };
